@@ -1,0 +1,72 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "XJNL",
+  "scopeName": "text.xml.xjnl",
+  "patterns": [
+    {
+      "include": "#python-tag-cdata"
+    },
+    {
+      "include": "#calculator-script-param-cdata"
+    },
+    {
+      "include": "text.xml"
+    }
+  ],
+  "repository": {
+    "python-tag-cdata": {
+      "name": "meta.embedded.block.python.xjnl",
+      "begin": "(<python\\b[^>]*>)(\\s*<!\\[CDATA\\[)",
+      "beginCaptures": {
+        "1": {
+          "name": "meta.tag.python.xjnl"
+        },
+        "2": {
+          "name": "punctuation.definition.string.begin.xml"
+        }
+      },
+      "end": "(\\]\\]>)(\\s*</python>)",
+      "endCaptures": {
+        "1": {
+          "name": "punctuation.definition.string.end.xml"
+        },
+        "2": {
+          "name": "meta.tag.python.xjnl"
+        }
+      },
+      "contentName": "source.python.embedded.xjnl",
+      "patterns": [
+        {
+          "include": "source.python"
+        }
+      ]
+    },
+    "calculator-script-param-cdata": {
+      "name": "meta.embedded.block.python.xjnl",
+      "begin": "(<param\\b(?=[^>]*\\bkey\\s*=\\s*[\"'](?:SCRIPT_START|SCRIPT|SCRIPT_END)[\"'])[^>]*>)(\\s*<!\\[CDATA\\[)",
+      "beginCaptures": {
+        "1": {
+          "name": "meta.tag.param.script.xjnl"
+        },
+        "2": {
+          "name": "punctuation.definition.string.begin.xml"
+        }
+      },
+      "end": "(\\]\\]>)(\\s*</param>)",
+      "endCaptures": {
+        "1": {
+          "name": "punctuation.definition.string.end.xml"
+        },
+        "2": {
+          "name": "meta.tag.param.script.xjnl"
+        }
+      },
+      "contentName": "source.python.embedded.xjnl",
+      "patterns": [
+        {
+          "include": "source.python"
+        }
+      ]
+    }
+  }
+}

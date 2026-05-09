@@ -1,0 +1,3 @@
+This extension is intended for local/internal use in this project.
+
+All rights reserved.

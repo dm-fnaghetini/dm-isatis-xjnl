@@ -1,0 +1,57 @@
+{
+  "name": "dm-isatis-xjnl",
+  "displayName": "DM Isatis XJNL",
+  "description": "Syntax highlighting for Isatis .xjnl journals with embedded Python CDATA blocks.",
+  "version": "0.1.0",
+  "publisher": "local-tools",
+  "private": true,
+  "license": "UNLICENSED",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "keywords": [
+    "xjnl",
+    "isatis",
+    "journal",
+    "python",
+    "xml"
+  ],
+  "extensionKind": [
+    "ui"
+  ],
+  "scripts": {
+    "package": "vsce package --allow-missing-repository",
+    "verify": "node ./scripts/verify-extension.js"
+  },
+  "contributes": {
+    "languages": [
+      {
+        "id": "xjnl",
+        "aliases": [
+          "XJNL",
+          "Isatis Journal"
+        ],
+        "extensions": [
+          ".xjnl"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "xjnl",
+        "scopeName": "text.xml.xjnl",
+        "path": "./syntaxes/xjnl.tmLanguage.json",
+        "embeddedLanguages": {
+          "source.python.embedded.xjnl": "python"
+        }
+      }
+    ]
+  },
+  "devDependencies": {
+    "@vscode/vsce": "^3.9.1"
+  }
+}

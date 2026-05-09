@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<batch>
+    <comment>Plain python block</comment>
+    <python><![CDATA[import pandas as pd
+
+df = pd.DataFrame({"value": [1, 2, 3]})
+print(df["value"].sum())
+]]></python>
+
+    <comment>Calculator task with python params</comment>
+    <task id="calculator">
+        <param key="SCRIPT_START"><![CDATA[import numpy as np
+scale = 10
+]]></param>
+        <param key="SCRIPT"><![CDATA[v2[:] = np.asarray(v1) * scale
+]]></param>
+        <param key="SCRIPT_END"><![CDATA[print("calculator finished")
+]]></param>
+    </task>
+</batch>
