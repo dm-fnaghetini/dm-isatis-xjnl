@@ -7,17 +7,17 @@ It recognizes Python in two types of sections:
 - `<python><![CDATA[ ... ]]></python>`
 - `<param key="SCRIPT_START|SCRIPT|SCRIPT_END"><![CDATA[ ... ]]></param>`
 
-It also highlights XJNL references to variables produced by Python blocks, such as `$(scale)` or `$(result_name)`.
+It also highlights XJNL references to variables produced by Python blocks, such as `$(scale)` or `$(result)`.
 Besides TextMate tokenization, the extension adds a high-visibility editor decoration over the whole `$(...)` call so variable edits stand out while reviewing batches.
 
 The supported `$(...)` forms are based on real batch files and include:
 
 - standalone XML values: `<path>$(FOLDER_BLOCKMODEL)</path>`
-- mixed XML text: `<file>$(FNAME_MODEL)_tmp</file>` and `vmod_$(dom_sect[j])_$(sectors[k])`
-- Python-like expressions: `$(PAR['blockmodel'].ox.iloc[0])`, `$(int(PAR['blockmodel'].nu.iloc[0]))`, `$(1 if not IS_DESTINATION_MODEL else 2)`
-- method calls and strings inside the interpolation: `$('|'.join(pol_names))`
-- interpolation inside Python CDATA code and strings: `df["A$(varor[i])1"]` and `df.loc[m1, "x"] = $(j) + $(k)`
-- XML attribute values, for batches that use them: `<param value="$(result_name)" />`
+- mixed XML text: `<file>$(MODEL_FILE_NAME)_tmp</file>` and `varmodel_$(domains[j])_$(sectors[i])`
+- Python-like expressions: `$(param_sheet['blockmodel'].ox.iloc[0])`, `$(int(param_sheet['blockmodel'].nu.iloc[0]))`, `$(1 if not IS_ST_MODEL else 2)`
+- method calls and strings inside the interpolation: `$('|'.join(geosolid_names))`
+- interpolation inside Python CDATA code and strings: `df["$(elm[i])1"]` and `df.loc[m1, "x"] = $(j) + $(k)`
+- XML attribute values, for batches that use them: `<param value="$(result)" />`
 
 ## Structure
 
