@@ -7,9 +7,22 @@ It recognizes Python in two types of sections:
 - `<python><![CDATA[ ... ]]></python>`
 - `<param key="SCRIPT_START|SCRIPT|SCRIPT_END"><![CDATA[ ... ]]></param>`
 
+It also highlights XJNL references to variables produced by Python blocks, such as `$(scale)` or `$(result_name)`.
+Besides TextMate tokenization, the extension adds a high-visibility editor decoration over the whole `$(...)` call so variable edits stand out while reviewing journals.
+
+The supported `$(...)` forms are based on real journal files and include:
+
+- standalone XML values: `<path>$(FOLDER_BLOCKMODEL)</path>`
+- mixed XML text: `<file>$(FNAME_MODEL)_tmp</file>` and `vmod_$(dom_sect[j])_$(sectors[k])`
+- Python-like expressions: `$(PAR['blockmodel'].ox.iloc[0])`, `$(int(PAR['blockmodel'].nu.iloc[0]))`, `$(1 if not IS_DESTINATION_MODEL else 2)`
+- method calls and strings inside the interpolation: `$('|'.join(pol_names))`
+- interpolation inside Python CDATA code and strings: `df["A$(varor[i])1"]` and `df.loc[m1, "x"] = $(j) + $(k)`
+- XML attribute values, for journals that use them: `<param value="$(result_name)" />`
+
 ## Structure
 
 - `package.json`: extension manifest and VS Code contributions.
+- `extension.js`: high-visibility editor decoration for `$(...)` variable calls.
 - `syntaxes/xjnl.tmLanguage.json`: TextMate grammar that injects Python into the expected CDATA blocks.
 - `language-configuration.json`: basic language settings for comments, pairs, and folding.
 - `.vscode/launch.json`: configuration for testing the extension in a development window.
@@ -58,3 +71,13 @@ After that, any `.xjnl` file should open with the `XJNL` language mode.
 This extension provides syntax highlighting. It does not execute Python, format Python inside CDATA, or enable Pylance linting/autocomplete inside those blocks.
 
 Those features would require a more complete TypeScript extension with virtual Python documents for each block.
+
+## Settings
+
+The high-visibility variable overlay can be disabled if needed:
+
+```json
+{
+  "dmIsatisXjnl.variableHighlight.enabled": false
+}
+```

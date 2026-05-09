@@ -2,7 +2,26 @@
   "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
   "name": "XJNL",
   "scopeName": "text.xml.xjnl",
+  "injections": {
+    "L:text.xml.xjnl meta.tag.xml string.quoted": {
+      "patterns": [
+        {
+          "include": "#variable-reference"
+        }
+      ]
+    },
+    "L:source.python.embedded.xjnl string.quoted": {
+      "patterns": [
+        {
+          "include": "#variable-reference"
+        }
+      ]
+    }
+  },
   "patterns": [
+    {
+      "include": "#variable-reference"
+    },
     {
       "include": "#python-tag-cdata"
     },
@@ -14,6 +33,176 @@
     }
   ],
   "repository": {
+    "variable-reference": {
+      "name": "meta.interpolation.python.xjnl",
+      "begin": "(\\$\\()",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.operator.interpolation.begin.xjnl"
+        }
+      },
+      "end": "(\\))",
+      "endCaptures": {
+        "1": {
+          "name": "keyword.operator.interpolation.end.xjnl"
+        }
+      },
+      "contentName": "source.python.embedded.xjnl",
+      "patterns": [
+        {
+          "include": "#interpolation-expression"
+        }
+      ]
+    },
+    "interpolation-expression": {
+      "patterns": [
+        {
+          "include": "#interpolation-string-single"
+        },
+        {
+          "include": "#interpolation-string-double"
+        },
+        {
+          "include": "#interpolation-parentheses"
+        },
+        {
+          "include": "#interpolation-brackets"
+        },
+        {
+          "include": "#interpolation-braces"
+        },
+        {
+          "include": "#xml-entity-reference"
+        },
+        {
+          "include": "source.python"
+        },
+        {
+          "match": "\\b[A-Za-z_][A-Za-z0-9_]*\\b",
+          "name": "entity.name.variable.reference.xjnl"
+        },
+        {
+          "match": "[^\\s()\\[\\]{}'\"&]+",
+          "name": "constant.other.placeholder.xjnl"
+        }
+      ]
+    },
+    "interpolation-parentheses": {
+      "name": "meta.group.parentheses.python.xjnl",
+      "begin": "(\\()",
+      "beginCaptures": {
+        "1": {
+          "name": "punctuation.section.group.begin.python"
+        }
+      },
+      "end": "(\\))",
+      "endCaptures": {
+        "1": {
+          "name": "punctuation.section.group.end.python"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#interpolation-expression"
+        }
+      ]
+    },
+    "interpolation-brackets": {
+      "name": "meta.item-access.python.xjnl",
+      "begin": "(\\[)",
+      "beginCaptures": {
+        "1": {
+          "name": "punctuation.section.brackets.begin.python"
+        }
+      },
+      "end": "(\\])",
+      "endCaptures": {
+        "1": {
+          "name": "punctuation.section.brackets.end.python"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#interpolation-expression"
+        }
+      ]
+    },
+    "interpolation-braces": {
+      "name": "meta.brace.python.xjnl",
+      "begin": "(\\{)",
+      "beginCaptures": {
+        "1": {
+          "name": "punctuation.section.braces.begin.python"
+        }
+      },
+      "end": "(\\})",
+      "endCaptures": {
+        "1": {
+          "name": "punctuation.section.braces.end.python"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#interpolation-expression"
+        }
+      ]
+    },
+    "interpolation-string-single": {
+      "name": "string.quoted.single.python",
+      "begin": "(')",
+      "beginCaptures": {
+        "1": {
+          "name": "punctuation.definition.string.begin.python"
+        }
+      },
+      "end": "(')",
+      "endCaptures": {
+        "1": {
+          "name": "punctuation.definition.string.end.python"
+        }
+      },
+      "patterns": [
+        {
+          "match": "\\\\.",
+          "name": "constant.character.escape.python"
+        }
+      ]
+    },
+    "interpolation-string-double": {
+      "name": "string.quoted.double.python",
+      "begin": "(\")",
+      "beginCaptures": {
+        "1": {
+          "name": "punctuation.definition.string.begin.python"
+        }
+      },
+      "end": "(\")",
+      "endCaptures": {
+        "1": {
+          "name": "punctuation.definition.string.end.python"
+        }
+      },
+      "patterns": [
+        {
+          "match": "\\\\.",
+          "name": "constant.character.escape.python"
+        }
+      ]
+    },
+    "xml-entity-reference": {
+      "match": "&(?:amp|lt|gt|quot|apos);",
+      "name": "constant.character.entity.xml"
+    },
+    "embedded-python-patterns": {
+      "patterns": [
+        {
+          "include": "#variable-reference"
+        },
+        {
+          "include": "source.python"
+        }
+      ]
+    },
     "python-tag-cdata": {
       "name": "meta.embedded.block.python.xjnl",
       "begin": "(<python\\b[^>]*>)(\\s*<!\\[CDATA\\[)",
@@ -37,7 +226,7 @@
       "contentName": "source.python.embedded.xjnl",
       "patterns": [
         {
-          "include": "source.python"
+          "include": "#embedded-python-patterns"
         }
       ]
     },
@@ -64,7 +253,7 @@
       "contentName": "source.python.embedded.xjnl",
       "patterns": [
         {
-          "include": "source.python"
+          "include": "#embedded-python-patterns"
         }
       ]
     }

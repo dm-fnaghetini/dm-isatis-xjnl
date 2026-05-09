@@ -4,6 +4,7 @@ const path = require("path");
 const root = path.resolve(__dirname, "..");
 const requiredFiles = [
   "package.json",
+  "extension.js",
   "language-configuration.json",
   "syntaxes/xjnl.tmLanguage.json",
   ".vscode/launch.json",
@@ -40,10 +41,45 @@ for (const relativePath of [
   }
 }
 
+const extensionPath = path.join(root, "extension.js");
+if (fs.existsSync(extensionPath)) {
+  const extension = fs.readFileSync(extensionPath, "utf8");
+  const expectedTokens = [
+    "createTextEditorDecorationType",
+    "findVariableReferenceSpans",
+    "dmIsatisXjnl.variableHighlight.enabled",
+    "onDidChangeTextDocument"
+  ];
+
+  for (const token of expectedTokens) {
+    if (!extension.includes(token)) {
+      console.error(`Extension script does not mention expected token: ${token}`);
+      hasError = true;
+    }
+  }
+}
+
 const grammarPath = path.join(root, "syntaxes/xjnl.tmLanguage.json");
 if (fs.existsSync(grammarPath)) {
   const grammar = fs.readFileSync(grammarPath, "utf8");
-  for (const token of ["SCRIPT_START", "SCRIPT", "SCRIPT_END", "source.python"]) {
+  const expectedTokens = [
+    "SCRIPT_START",
+    "SCRIPT",
+    "SCRIPT_END",
+    "source.python",
+    "source.python.embedded.xjnl string.quoted",
+    "injections",
+    "variable-reference",
+    "embedded-python-patterns",
+    "interpolation-parentheses",
+    "interpolation-brackets",
+    "interpolation-string-single",
+    "xml-entity-reference",
+    "keyword.operator.interpolation.begin.xjnl",
+    "entity.name.variable.reference.xjnl"
+  ];
+
+  for (const token of expectedTokens) {
     if (!grammar.includes(token)) {
       console.error(`Grammar does not mention expected token: ${token}`);
       hasError = true;

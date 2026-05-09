@@ -22,6 +22,10 @@
   "extensionKind": [
     "ui"
   ],
+  "main": "./extension.js",
+  "activationEvents": [
+    "onLanguage:xjnl"
+  ],
   "scripts": {
     "package": "vsce package --allow-missing-repository",
     "verify": "node ./scripts/verify-extension.js"
@@ -49,7 +53,17 @@
           "source.python.embedded.xjnl": "python"
         }
       }
-    ]
+    ],
+    "configuration": {
+      "title": "DM Isatis XJNL",
+      "properties": {
+        "dmIsatisXjnl.variableHighlight.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable high-visibility highlighting for XJNL variable calls such as $(FOLDER_BLOCKMODEL)."
+        }
+      }
+    }
   },
   "devDependencies": {
     "@vscode/vsce": "^3.9.1"

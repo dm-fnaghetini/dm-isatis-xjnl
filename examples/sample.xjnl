@@ -7,14 +7,26 @@ df = pd.DataFrame({"value": [1, 2, 3]})
 print(df["value"].sum())
 ]]></python>
 
-    <comment>Calculator task with python params</comment>
-    <task id="calculator">
+    <comment>DataFrame transform task with python params</comment>
+    <task id="dataframe_transform">
+        <param key="INPUT">$(df)</param>
+        <param key="SCALE">$(scale)</param>
+        <param key="ALIAS" value="$(result_name)" />
+        <param key="OUTPUT">$(result_name)</param>
+        <param key="CHAIN">$(dataframes['input'].columns[0])</param>
+        <param key="EXPRESSION">$(1 if not options.get('normalize') else 2)</param>
+        <param key="JOIN">$('|'.join(column_names))</param>
+        <param key="MIXED">series_$(dataset_names[j])_$(column_names[k].upper())</param>
         <param key="SCRIPT_START"><![CDATA[import numpy as np
+
 scale = 10
+result_name = "scaled_values"
+column_name = "feature_$(column_names[i])"
 ]]></param>
-        <param key="SCRIPT"><![CDATA[v2[:] = np.asarray(v1) * scale
+        <param key="SCRIPT"><![CDATA[output_array[:] = np.asarray(input_array) * scale + $(row_index) + $(column_index)
+df["$(column_names[i])_ratio"] = df["$(column_names[i])"] / df["total"]
 ]]></param>
-        <param key="SCRIPT_END"><![CDATA[print("calculator finished")
+        <param key="SCRIPT_END"><![CDATA[print("dataframe transform finished")
 ]]></param>
     </task>
 </batch>
